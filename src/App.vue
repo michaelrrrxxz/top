@@ -1,4 +1,7 @@
 <template>
+
+
+
   <div class="ft-app">
     <div class="noise-overlay"></div>
 
@@ -24,6 +27,28 @@
     </header>
 
     <main class="ft-main">
+      <div v-if="showWelcome" class="welcome-overlay">
+  <div class="welcome-modal">
+
+    <div class="mic">🎤</div>
+
+    <h2>WELCOME TO FLIPTOP STANDINGS</h2>
+
+    <p>
+      Unofficial rankings, champions, and battle records
+      from the First Filipino Rap Battle League.
+    </p>
+
+    <div class="battle-quote">
+      "BARS OVER HYPE."
+    </div>
+
+    <button @click="closeModal">
+      ENTER THE ARENA
+    </button>
+
+  </div>
+</div>
       <div class="arena-lines"></div>
       <router-view v-slot="{ Component }">
         <transition name="slide-up" mode="out-in">
@@ -43,6 +68,55 @@
 </template>
 
 <style>
+
+
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.welcome-modal {
+  width: min(500px, 90%);
+  background: #111;
+  border: 2px solid #ff3b30;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 0 40px rgba(255,59,48,.4);
+}
+
+.mic {
+  font-size: 4rem;
+  margin-bottom: 10px;
+}
+
+.welcome-modal h2 {
+  color: #ff3b30;
+  margin-bottom: 10px;
+}
+
+.battle-quote {
+  margin: 20px 0;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.welcome-modal button {
+  border: none;
+  background: #ff3b30;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: bold;
+}
 /* ── Google Fonts ── */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Share+Tech+Mono&display=swap');
 
@@ -715,4 +789,18 @@ onMounted(async () => {
     console.error('Failed to load visits:', error)
   }
 })
+
+
+const showWelcome = ref(false)
+
+onMounted(() => {
+  if (!sessionStorage.getItem('fliptop-welcome')) {
+    showWelcome.value = true
+    sessionStorage.setItem('fliptop-welcome', 'shown')
+  }
+})
+
+const closeModal = () => {
+  showWelcome.value = false
+}
 </script>
