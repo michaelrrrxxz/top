@@ -32,9 +32,13 @@
       </router-view>
     </main>
 
-    <footer class="ft-footer">
-      <span>© FlipTop Rap Battle League &nbsp;·&nbsp; Philippines &nbsp;·&nbsp;  Created by MichaelAngelo.dev &nbsp;·&nbsp; Mart Tabilin for the data</span>
-    </footer>
+ <footer class="ft-footer">
+  <span>
+    © FlipTop Rap Battle League · Philippines ·
+    Created by MichaelAngelo.dev · Mart Tabilin for the data ·
+    Visits: {{ visits }}
+  </span>
+</footer>
   </div>
 </template>
 
@@ -695,7 +699,20 @@ a { text-decoration: none; color: inherit; }
 </style>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import {
-Crown,
+  Crown,
 } from 'lucide-vue-next'
+
+const visits = ref(0)
+
+onMounted(async () => {
+  try {
+    const response = await fetch('/api/visits')
+    const data = await response.json()
+    visits.value = data.visits
+  } catch (error) {
+    console.error('Failed to load visits:', error)
+  }
+})
 </script>
